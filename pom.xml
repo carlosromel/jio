@@ -15,4 +15,181 @@
   <name>JavaIO</name>
 
   <inceptionYear>2023</inceptionYear>
+
+  <licenses>
+      <license>
+          <name>GNU General Public License (GPL)</name>
+          <url>http://www.gnu.org/licenses/gpl-2.0.txt</url>
+          <distribution>repo</distribution>
+      </license>
+  </licenses>
+
+  <developers>
+      <developer>
+          <id>cromel</id>
+          <name>Carlos Romel Pereira da Silva</name>
+          <email>carlos.romel@gmail.com</email>
+          <url>https://github.com/carlosromel</url>
+          <timezone>GMT-3</timezone>
+      </developer>
+  </developers>
+
+  <build>
+      <pluginManagement>
+          <plugins>
+              <plugin>
+                  <groupId>org.sonarsource.scanner.maven</groupId>
+                  <artifactId>sonar-maven-plugin</artifactId>
+                  <version>3.2</version>
+              </plugin>
+          </plugins>
+      </pluginManagement>
+
+      <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-site-plugin</artifactId>
+              <version>3.7.1</version>
+              <configuration>
+                  <locales>pt_BR</locales>
+              </configuration>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-source-plugin</artifactId>
+              <version>3.0.1</version>
+              <executions>
+                  <execution>
+                      <id>attach-sources</id>
+                      <goals>
+                          <goal>jar</goal>
+                      </goals>
+                  </execution>
+              </executions>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-shade-plugin</artifactId>
+              <version>1.6</version>
+              <executions>
+                  <execution>
+                      <phase>package</phase>
+                      <goals>
+                          <goal>shade</goal>
+                      </goals>
+                      <configuration>
+                          <minimizeJar>false</minimizeJar>
+                          <filters>
+                              <filter>
+                                  <artifact>*:*</artifact>
+                                  <excludes>
+                                      <exclude>META-INF/*.SF</exclude>
+                                      <exclude>META-INF/*.DSA</exclude>
+                                      <exclude>META-INF/*.RSA</exclude>
+                                  </excludes>
+                              </filter>
+                          </filters>
+                          <transformers>
+                              <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                  <mainClass>br.eti.romel.lounge.javaio.Main</mainClass>
+                              </transformer>
+                          </transformers>
+                      </configuration>
+                  </execution>
+              </executions>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-deploy-plugin</artifactId>
+              <version>2.8.2</version>
+              <configuration>
+                  <skip>true</skip>
+              </configuration>
+          </plugin>
+      </plugins>
+
+      <resources>
+          <resource>
+              <directory>${basedir}</directory>
+              <filtering>true</filtering>
+              <includes>
+                  <include>pom.xml</include>
+              </includes>
+          </resource>
+          <resource>
+              <directory>${basedir}/src/main/java</directory>
+              <filtering>true</filtering>
+              <includes>
+                  <include>**/*.java</include>
+                  <include>**/*.xml</include>
+                  <include>**/*properties</include>
+              </includes>
+          </resource>
+          <resource>
+              <directory>${basedir}/src/main/resources</directory>
+          </resource>
+      </resources>
+  </build>
+
+  <reporting>
+      <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-project-info-reports-plugin</artifactId>
+              <version>3.0.0</version>
+              <reportSets>
+                  <reportSet>
+                      <reports>
+                          <report>dependencies</report>
+                          <report>project-team</report>
+                          <report>mailing-list</report>
+                          <report>cim</report>
+                          <report>issue-tracking</report>
+                          <report>license</report>
+                      </reports>
+                  </reportSet>
+              </reportSets>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-report-plugin</artifactId>
+              <version>2.22.0</version>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-pmd-plugin</artifactId>
+              <version>3.10.0</version>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-jxr-plugin</artifactId>
+              <version>2.5</version>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-checkstyle-plugin</artifactId>
+              <version>3.0.0</version>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <version>3.0.1</version>
+              <reportSets>
+                  <reportSet><!-- by default, id = "default" -->
+                      <reports><!-- select non-aggregate reports -->
+                          <report>javadoc</report>
+                          <report>test-javadoc</report>
+                      </reports>
+                  </reportSet>
+                  <reportSet><!-- aggregate reportSet, to define in poms having modules -->
+                      <id>aggregate</id>
+                      <inherited>false</inherited><!-- don't run aggregate in child modules -->
+                      <reports>
+                          <report>aggregate</report>
+                      </reports>
+                  </reportSet>
+              </reportSets>
+          </plugin>
+      </plugins>
+  </reporting>
 </project>
